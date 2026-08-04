@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Base {
+  id                   Int        @id @default(autoincrement())
+  name                 String
+  location             String
+  users                User[]
+  purchases            Purchase[]
+  transfersAsSource      Transfer[] @relation("SourceBase")
+  transfersAsDestination Transfer[] @relation("DestinationBase")
+  createdAt            DateTime   @default(now())
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  username     String     @unique
+  passwordHash String
+  role         Role       @default(LOGISTICS_OFFICER)
+  baseId       Int?
+  base         Base?      @relation(fields: [baseId], references: [id])
+  auditLogs    AuditLog[]
+  transfers    Transfer[]
+  createdAt    DateTime   @default(now())
+}
+
+enum Role {
+  ADMIN
+  BASE_COMMANDER
+  LOGISTICS_OFFICER
+}
+
+model EquipmentType {
+  id        Int               @id @default(autoincrement())
+  name      String
+  category  EquipmentCategory
+  purchases Purchase[]
+  transfers Transfer[]
+  createdAt DateTime          @default(now())
+}
+
+enum EquipmentCategory {
+  WEAPON
+  VEHICLE
+  AMMUNITION
+}
+
+model Purchase {
+  id              Int           @id @default(autoincrement())
+  baseId          Int
+  equipmentTypeId Int
+  quantity        Int
+  base            Base          @relation(fields: [baseId], references: [id])
+  equipmentType   EquipmentType @relation(fields: [equipmentTypeId], references: [id])
+  createdAt       DateTime      @default(now())
+}
+
+model Transfer {
+  id                Int           @id @default(autoincrement())
+  sourceBaseId      Int
+  destinationBaseId Int
+  equipmentTypeId   Int
+  quantity          Int
+  status            TransferStatus @default(COMPLETED)
+  initiatedById     Int
+  sourceBase        Base          @relation("SourceBase", fields: [sourceBaseId], references: [id])
+  destinationBase   Base          @relation("DestinationBase", fields: [destinationBaseId], references: [id])
+  equipmentType     EquipmentType @relation(fields: [equipmentTypeId], references: [id])
+  initiatedBy       User          @relation(fields: [initiatedById], references: [id])
+  createdAt         DateTime      @default(now())
+}
+
+enum TransferStatus {
+  PENDING
+  IN_TRANSIT
+  COMPLETED
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  details   String
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
