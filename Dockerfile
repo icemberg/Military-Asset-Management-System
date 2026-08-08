@@ -20,6 +20,8 @@ FROM node:22-alpine
 WORKDIR /app
 RUN apk add --no-cache openssl
 
+ENV NODE_ENV=production
+
 # Copy Backend
 COPY --from=backend-builder /app/backend ./backend
 # Copy Frontend build output to backend public folder

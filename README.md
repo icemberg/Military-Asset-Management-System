@@ -173,7 +173,7 @@ This project uses a unified multi-stage Dockerfile that builds the Vite frontend
    - `DATABASE_URL`: Your Postgres connection string.
    - `JWT_SECRET`: A secure randomized secret key.
    - `PORT`: 5000 
-4. Run `npx prisma db push && node prisma/seed.js` manually on your database (via connection string locally or in Render shell) to seed the initial roles.
+4. The Docker container will automatically run `npx prisma db push --accept-data-loss` and seed the initial roles upon starting.
 
 ## 🔑 Sample Credentials
 
