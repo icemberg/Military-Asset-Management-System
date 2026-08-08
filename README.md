@@ -145,7 +145,8 @@ sequenceDiagram
 
 ### RBAC Authorization Flow
 
-Security is prioritized. Depending on the `role` encoded in the JWT, scopes are either unrestricted or strictly pinned to a `baseId`.
+Security is prioritized. Depending on the `role` encoded in the JWT, scopes are either unrestricted or strictly pinned to a `baseId`. 
+For Base Commanders, both write operations (creating assignments/expenditures) and read operations (listing assignments/expenditures) are strictly isolated to their own base via the `enforceBaseScope` middleware, preventing any cross-base data leakage.
 
 ```mermaid
 flowchart TD

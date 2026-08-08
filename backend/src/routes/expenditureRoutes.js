@@ -19,6 +19,7 @@ router.post(
 
 router.get(
   '/', 
+  enforceBaseScope,
   getExpenditures
 );
 

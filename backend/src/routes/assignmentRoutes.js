@@ -20,6 +20,7 @@ router.post(
 
 router.get(
   '/', 
+  enforceBaseScope,
   getAssignments
 );
 
