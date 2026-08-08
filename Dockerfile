@@ -34,4 +34,4 @@ WORKDIR /app/backend
 
 # The Render deployment will need to provide DATABASE_URL and JWT_SECRET
 EXPOSE 5000
-CMD ["sh", "-c", "npx prisma db push --accept-data-loss && node prisma/seed.js && npm start"]
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss && (node prisma/seed.js || true) && npm start"]
