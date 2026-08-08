@@ -20,7 +20,7 @@ export const Transfers = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line no-extra-semi
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     ;(async () => {
       try {
         const { data } = await api.get('/transfers');

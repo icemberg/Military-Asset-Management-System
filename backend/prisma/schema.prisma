@@ -15,6 +15,8 @@ model Base {
   purchases            Purchase[]
   transfersAsSource      Transfer[] @relation("SourceBase")
   transfersAsDestination Transfer[] @relation("DestinationBase")
+  assignments          Assignment[]
+  expenditures         Expenditure[]
   createdAt            DateTime   @default(now())
 }
 
@@ -25,9 +27,11 @@ model User {
   role         Role       @default(LOGISTICS_OFFICER)
   baseId       Int?
   base         Base?      @relation(fields: [baseId], references: [id])
-  auditLogs    AuditLog[]
-  transfers    Transfer[]
-  createdAt    DateTime   @default(now())
+  auditLogs             AuditLog[]
+  transfers             Transfer[]
+  assignmentsInitiated  Assignment[]
+  expendituresInitiated Expenditure[]
+  createdAt             DateTime   @default(now())
 }
 
 enum Role {
@@ -40,9 +44,11 @@ model EquipmentType {
   id        Int               @id @default(autoincrement())
   name      String
   category  EquipmentCategory
-  purchases Purchase[]
-  transfers Transfer[]
-  createdAt DateTime          @default(now())
+  purchases    Purchase[]
+  transfers    Transfer[]
+  assignments  Assignment[]
+  expenditures Expenditure[]
+  createdAt    DateTime          @default(now())
 }
 
 enum EquipmentCategory {
@@ -89,4 +95,45 @@ model AuditLog {
   details   String
   user      User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+}
+
+model Assignment {
+  id              Int              @id @default(autoincrement())
+  baseId          Int
+  equipmentTypeId Int
+  quantity        Int
+  personnelName   String
+  status          AssignmentStatus @default(ACTIVE)
+  returnedAt      DateTime?
+  initiatedById   Int
+  base            Base             @relation(fields: [baseId], references: [id])
+  equipmentType   EquipmentType    @relation(fields: [equipmentTypeId], references: [id])
+  initiatedBy     User             @relation(fields: [initiatedById], references: [id])
+  createdAt       DateTime         @default(now())
+
+  @@index([baseId])
+  @@index([equipmentTypeId])
+  @@index([createdAt])
+}
+
+enum AssignmentStatus {
+  ACTIVE
+  RETURNED
+}
+
+model Expenditure {
+  id              Int           @id @default(autoincrement())
+  baseId          Int
+  equipmentTypeId Int
+  quantity        Int
+  reason          String
+  initiatedById   Int
+  base            Base          @relation(fields: [baseId], references: [id])
+  equipmentType   EquipmentType @relation(fields: [equipmentTypeId], references: [id])
+  initiatedBy     User          @relation(fields: [initiatedById], references: [id])
+  createdAt       DateTime      @default(now())
+
+  @@index([baseId])
+  @@index([equipmentTypeId])
+  @@index([createdAt])
 }

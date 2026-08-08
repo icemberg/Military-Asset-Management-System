@@ -6,11 +6,14 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Purchases } from './pages/Purchases';
 import { Transfers } from './pages/Transfers';
+import { AssignmentsExpenditures } from './pages/AssignmentsExpenditures';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
   if (loading) return <div>Loading...</div>;
   if (!user) return <Navigate to="/login" />;
+  if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/" />;
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -43,6 +46,11 @@ const App = () => {
           <Route path="/transfers" element={
             <ProtectedRoute>
               <Transfers />
+            </ProtectedRoute>
+          } />
+          <Route path="/assignments" element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'BASE_COMMANDER']}>
+              <AssignmentsExpenditures />
             </ProtectedRoute>
           } />
         </Routes>

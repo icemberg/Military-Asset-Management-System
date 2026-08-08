@@ -11,7 +11,8 @@ export const Sidebar = () => {
   const links = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['ADMIN', 'BASE_COMMANDER', 'LOGISTICS_OFFICER'] },
     { name: 'Purchases', path: '/purchases', icon: ShoppingCart, roles: ['ADMIN', 'LOGISTICS_OFFICER'] },
-    { name: 'Transfers', path: '/transfers', icon: Truck, roles: ['ADMIN', 'LOGISTICS_OFFICER'] }
+    { name: 'Transfers', path: '/transfers', icon: Truck, roles: ['ADMIN', 'LOGISTICS_OFFICER'] },
+    { name: 'Assignments & Expenditures', path: '/assignments', icon: LayoutDashboard, roles: ['ADMIN', 'BASE_COMMANDER'] }
   ];
 
   return (

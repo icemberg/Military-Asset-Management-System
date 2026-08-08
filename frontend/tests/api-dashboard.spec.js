@@ -18,7 +18,7 @@ test.describe('Dashboard & Aggregations', () => {
     
     const expectedNet = body.purchases + body.transfersIn - body.transfersOut;
     expect(body.netMovement).toBe(expectedNet);
-    expect(body.closingBalance).toBe(body.openingBalance + expectedNet);
+    expect(body.closingBalance).toBe(body.openingBalance + expectedNet - (body.expended || 0));
   });
 
   test('Filter by baseId', async ({ request }) => {

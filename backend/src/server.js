@@ -8,6 +8,8 @@ import authRoutes from './routes/authRoutes.js';
 import assetRoutes from './routes/assetRoutes.js';
 import purchaseRoutes from './routes/purchaseRoutes.js';
 import transferRoutes from './routes/transferRoutes.js';
+import assignmentRoutes from './routes/assignmentRoutes.js';
+import expenditureRoutes from './routes/expenditureRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 dotenv.config();
@@ -28,6 +30,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/assets', assetRoutes);
 app.use('/api/purchases', purchaseRoutes);
 app.use('/api/transfers', transferRoutes);
+app.use('/api/assignments', assignmentRoutes);
+app.use('/api/expenditures', expenditureRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
 

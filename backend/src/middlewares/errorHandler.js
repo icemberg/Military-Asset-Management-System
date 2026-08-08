@@ -5,10 +5,15 @@ import {
   CrossBaseAccessError,
   DatabaseConnectionError,
   AuthorizationError,
-  AuthenticationError
+  AuthenticationError,
+  InvalidAssignmentStateError,
+  NotFoundError
 } from '../utils/errors.js';
 
 export const errorHandler = (err, req, res, next) => {
+  if (err instanceof NotFoundError) {
+    return res.status(err.statusCode).json({ error: err.message });
+  }
   if (err instanceof ValidationError) {
     return res.status(400).json({ error: err.message });
   }
@@ -20,6 +25,9 @@ export const errorHandler = (err, req, res, next) => {
   }
   if (err instanceof SameBaseTransferError) {
     return res.status(400).json({ error: err.message });
+  }
+  if (err instanceof InvalidAssignmentStateError) {
+    return res.status(err.statusCode).json({ error: err.message });
   }
   if (err instanceof CrossBaseAccessError || err instanceof AuthorizationError) {
     return res.status(403).json({ error: err.message });

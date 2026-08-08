@@ -19,6 +19,14 @@ export class ValidationError extends Error {
   }
 }
 
+export class NotFoundError extends Error {
+  constructor(message = "Resource not found") {
+    super(message);
+    this.name = 'NotFoundError';
+    this.statusCode = 404;
+  }
+}
+
 export class CrossBaseAccessError extends Error {
   constructor(message = "Access Denied: Cross-base operations not allowed") {
     super(message);
@@ -44,5 +52,13 @@ export class AuthenticationError extends Error {
   constructor(message = "Invalid credentials") {
     super(message);
     this.name = 'AuthenticationError';
+  }
+}
+
+export class InvalidAssignmentStateError extends Error {
+  constructor(message = "Invalid assignment state") {
+    super(message);
+    this.name = 'InvalidAssignmentStateError';
+    this.statusCode = 409;
   }
 }
